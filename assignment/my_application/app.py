@@ -148,13 +148,20 @@ def images_remove_all():
     #Get all images and put them in array 
     all = docker('images', '-a')
     array = []
-    array = docker_ps_to_array(all)
+    array = docker_images_to_array(all)
+    #Get all the running containers to shut off if in use
+    allc = docker('ps')
+    containers = docker_ps_to_array(allc)
 
     #Go through image array
     #Delete images based on each id
     for images in array:
 	id = images["id"]
-	docker('rmi', id)
+	for con in containers:
+		if id == con["image"]:
+			containers_remove(con["id"])
+
+	docker('rmi', '-f', id)
 
     return 'Deleted all images'
 

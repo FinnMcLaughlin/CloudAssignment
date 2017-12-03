@@ -29,7 +29,7 @@ def list_container_logs():
         os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
 
         id = raw_input('Enter container id: ')
-	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers/11d1c9947029/logs | python -mjson.tool')
+	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers/'+id+'/logs | python -mjson.tool')
 	print '\n\n'
 	menu()
 
