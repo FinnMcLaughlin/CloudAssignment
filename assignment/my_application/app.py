@@ -36,12 +36,12 @@ def containers_index():
     """
     #Only display running containers
     if request.args.get('state') == 'running':
-        output = docker('ps')
-        resp = json.dumps(docker_ps_to_array(output))
+	output = docker('ps')
+	resp = json.dumps(docker_ps_to_array(output))
     #Display all containers
     else:
-        output = docker('ps', '-a')
-        resp = json.dumps(docker_ps_to_array(output))
+	output = docker('ps', '-a')
+	resp = json.dumps(docker_ps_to_array(output))
 
 
     return Response(response=resp, mimetype="application/json")

@@ -5,11 +5,13 @@ def list_containers():
 	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
 	print '\n\n'
 	menu()
+
 #2 List running containers
 def list_run_containers():
 	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers?state=running | python -mjson.tool')
 	print '\n\n'
 	menu()
+
 #3 List specific containers
 def list_specific_container():
 	print 'List of all containers to choose from:\n'
@@ -19,6 +21,7 @@ def list_specific_container():
 	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers/' + id + ' | python -mjson.tool')
 	print '\n\n'
 	menu()
+
 #4 List container logs
 def list_container_logs():
 	print '--Container Logs'
@@ -34,8 +37,13 @@ def delete_container():
 	print '--Delete Container'
         print 'List of all containers to choose from:\n'
         os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
-        id = raw_input('Enter container id: ')
+
+	id = raw_input('Enter container id: ')
         os.system('curl -s -X DELETE -H \'Accept: application/json\' http://localhost:8080/containers/' + id + ' | python -mjson.tool')
+
+        print 'Update list of containers:\n'
+        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
+
         print '\n\n'
         menu()
 
@@ -43,13 +51,17 @@ def delete_container():
 def delete_all_containers():
         print '--Delete All Containers'
         os.system('curl -s -X DELETE -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
-        print '\n\n'
-        menu()	
+
+        print 'Update list of containers:\n'
+        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
+
+	print '\n\n'
+        menu()
 
 #7 List all images
-def list_all_images():
+def list_images():
         print '---All Images'
-        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
+	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
         print '\n\n'
         menu()
 
@@ -58,8 +70,12 @@ def delete_image():
         print '--Delete Image'
         print 'List of all images to choose from:\n'
         os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
-        id = raw_input('Enter image id: ')
+
+	id = raw_input('Enter image id: ')
         os.system('curl -s -X DELETE -H \'Accept: application/json\' http://localhost:8080/images/' + id + ' | python -mjson.tool')
+
+        print 'Update list of images:\n'
+        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
         print '\n\n'
         menu()
 
@@ -67,6 +83,9 @@ def delete_image():
 def delete_all_images():
         print '--Delete All Images'
         os.system('curl -s -X DELETE -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
+
+        print 'Update list of images:\n'
+        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
         print '\n\n'
         menu()
 
@@ -83,7 +102,8 @@ def create_container():
 #11 Create Image
 def create_image():
         print '--Create Image'
-        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
+        #Not implemented correctly yet
+	print 'Coming soon'
         print '\n\n'
         menu()
 
@@ -95,10 +115,10 @@ def update_container():
         state = raw_input('Do you want to 1.start or 2.stop a container: ')
 	if state == '1':
 		id = raw_input('Enter container id: ')
-		os.system('curl -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/containers/' + id + ' -d \'{\"state\": \"running\"}\'')
+		os.system('curl -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/containers/' + id + ' -d \'{"state": "running"}\'')
 	elif state == '2':
                 id = raw_input('Enter container id: ')
-                os.system('curl -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/containers/' + id + ' -d \'{\"state\": \"stopped\"}\'')
+                os.system('curl -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/containers/' + id + ' -d \'{"state": "stopped"}\'')
 
         print '\n\n'
         menu()
@@ -109,8 +129,11 @@ def update_image():
         print '--Update Image Tag'
         print 'List of all images to choose from:\n'
         os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/images | python -mjson.tool')
-        id = raw_input('Enter container id: ')
-        os.system('curl -s -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/images/' + id + '-d \'{\"tag\": \"test:1.0\"}\'')
+
+        id = raw_input('Enter image id: ')
+        name = raw_input('Enter new image name: ')
+	tag = raw_input('Enter new image  tag: ')
+	os.system('curl -s -X PATCH -H \'Content-Type: application/json\' http://localhost:8080/images/' + id + ' -d \'{\"tag\": \"' + name + ':' + tag + '\"}\'')
 	print '\n\n'
         menu()
 
@@ -119,7 +142,7 @@ def menu():
 	print '1. List all containers\t\t2. List all running containers\t\t3. List specific containers'
 	print '4. List container logs\t\t5. Delete specific container\t\t6. Delete all containers (Dangerous)'
 	print '7. List all images\t\t8. Delete specific image\t\t9. Delete all image (Dangerous)'
-	print '10. Create container\t\t9. Create image\t\t\t\t12. Update container status'
+	print '10. Create container\t\t11. Create image\t\t\t\t12. Update container status'
 	print '13. Update image tag\t\t'
 	input = raw_input('What do you want to do: ')
 
