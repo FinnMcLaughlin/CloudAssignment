@@ -250,6 +250,12 @@ def images_update(id):
 
     return Response(response=resp, mimetype="application/json")
 
+@app.route('/nodes', methods=['GET'])
+def all_nodes():
+    output = docker('node', 'ls')
+    resp = json.dumps(docker_ps_to_array(output))
+
+    return Response(response=resp, mimetype="application/json")
 
 def docker(*args):
     cmd = ['docker']
