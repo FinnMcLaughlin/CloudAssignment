@@ -27,8 +27,9 @@ def list_container_logs():
 	print '--Container Logs'
         print 'List of all containers to choose from:\n'
         os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers | python -mjson.tool')
+
         id = raw_input('Enter container id: ')
-	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers/' + id + '/logs | python -mjson.tool')
+	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/containers/11d1c9947029/logs | python -mjson.tool')
 	print '\n\n'
 	menu()
 
@@ -137,13 +138,27 @@ def update_image():
 	print '\n\n'
         menu()
 
+#14 List all nodes
+def list_nodes():
+	print '--List All Nodes'
+	os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/nodes | python -mjson.tool')
+        print '\n\n'
+        menu()
+
+#15 List services
+def list_services():
+        print '--List All Services'
+        os.system('curl -s -X GET -H \'Accept: application/json\' http://localhost:8080/service | python -mjson.tool')
+        print '\n\n'
+        menu()
+
 def menu():
     	print("----------------Menu----------------")
 	print '1. List all containers\t\t2. List all running containers\t\t3. List specific containers'
 	print '4. List container logs\t\t5. Delete specific container\t\t6. Delete all containers (Dangerous)'
 	print '7. List all images\t\t8. Delete specific image\t\t9. Delete all image (Dangerous)'
-	print '10. Create container\t\t11. Create image\t\t\t\t12. Update container status'
-	print '13. Update image tag\t\t'
+	print '10. Create container\t\t11. Create image\t\t\t12. Update container status'
+	print '13. Update image tag\t\t14. List all nodes\t\t\t15. List all services'
 	input = raw_input('What do you want to do: ')
 
 
@@ -173,6 +188,10 @@ def menu():
 		update_container()
 	elif input == '13':
 		update_image()
+	elif input == '14':
+		list_nodes()
+	elif input == '15':
+		list_services()
 	elif input == '0':
 		exit()
 

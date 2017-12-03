@@ -77,7 +77,7 @@ def containers_log(id):
     """
     #Display certain container's log
     output = docker('logs', id)
-    resp = output
+    resp = json.dumps(docker_logs_to_object(id, output))
 
     return Response(response=resp, mimetype="application/json")
 
@@ -252,7 +252,16 @@ def images_update(id):
 
 @app.route('/nodes', methods=['GET'])
 def all_nodes():
+    #Get all nodes
     output = docker('node', 'ls')
+    resp = json.dumps(docker_ps_to_array(output))
+
+    return Response(response=resp, mimetype="application/json")
+
+@app.route('/service', methods=['GET'])
+def all_services():
+    #Get all services
+    output = docker('service', 'ls')
     resp = json.dumps(docker_ps_to_array(output))
 
     return Response(response=resp, mimetype="application/json")
